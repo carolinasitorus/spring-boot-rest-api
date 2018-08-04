@@ -1,5 +1,6 @@
 package currencyusemockdata;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -7,44 +8,46 @@ import java.util.Map;
 
 @RestController
 public class CurrencyController {
-    CurrencyMockedData currencyMockedData = CurrencyMockedData.getInstance();
+    @Autowired
+    CurrencyRepository currencyRepository;
 
-    @GetMapping("/currencyusemockdata")
-    public List<Currency> index(){
-        return currencyMockedData.fetchCurrencies();
+    @GetMapping("/currency")
+    public List<Currency> index() {
+        return currencyRepository.findAll();
     }
 
-    @GetMapping("/currencyusemockdata/{id}")
-    public Currency show(@PathVariable String id){
+    @GetMapping("/currency/{id}")
+    public Currency show(@PathVariable String id) {
         int currencyId = Integer.parseInt(id);
-        return currencyMockedData.getCurrencyById(currencyId);
+        return currencyRepository.findOne(currencyId);
     }
 
-    @PostMapping("/currencyusemockdata/search")
-    public List<Currency> search(@RequestBody Map<String, String> body){
+    @PostMapping("/currency/search")
+    public List<Currency> search(@RequestBody Map<String, String> body) {
         String searchTerm = body.get("text");
-        return currencyMockedData.searchCurrencies(searchTerm);
+        return currencyRepository.findByNameContainingOrDescriptionContaining(searchTerm, searchTerm);
     }
 
-    @PostMapping("/currencyusemockdata")
-    public Currency create(@RequestBody Map<String, String> body){
-        int id = Integer.parseInt(body.get("id"));
-        String name = body.get("name");
+    @PostMapping("/currency")
+    public Currency create(@RequestBody Map<String, String> body) {
+        String name = body.get("title");
         String description = body.get("description");
-        return currencyMockedData.createCurrency(id, name, description);
+        return currencyRepository.save(new Currency(name, description));
     }
 
-    @PutMapping("/currencyusemockdata/{id}")
-    public Currency update(@PathVariable String id, @RequestBody Map<String, String> body){
+    @PutMapping("/currency/{id}")
+    public Currency update(@PathVariable String id, @RequestBody Map<String, String> body) {
         int currencyId = Integer.parseInt(id);
-        String name = body.get("name");
-        String description = body.get("description");
-        return currencyMockedData.updateCurrency(currencyId, name, description);
+        Currency currency = currencyRepository.findOne(currencyId);
+        currency.setName(body.get("name"));
+        currency.setDescription(body.get("description"));
+        return currencyRepository.save(currency);
     }
 
-    @DeleteMapping("currencyusemockdata/{id}")
-    public boolean delete(@PathVariable String id){
+    @DeleteMapping("/currency/{id}")
+    public boolean delete(@PathVariable String id) {
         int currencyId = Integer.parseInt(id);
-        return currencyMockedData.delete(currencyId);
+        currencyRepository.delete(currencyId);
+        return true;
     }
 }

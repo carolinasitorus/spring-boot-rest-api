@@ -3,8 +3,7 @@ package currencyusemockdata;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "currencies")
-public class Currency {
+public class CurrencyMockData {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -15,9 +14,10 @@ public class Currency {
     @Column(name="description")
     private String description;
 
-    public Currency() { }
+    public CurrencyMockData() { }
 
-    public Currency(String name, String description) {
+    public CurrencyMockData(int id, String name, String description) {
+        this.setId(id);
         this.setName(name);
         this.setDescription(description);
     }
