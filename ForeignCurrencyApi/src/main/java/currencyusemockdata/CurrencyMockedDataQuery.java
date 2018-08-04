@@ -3,37 +3,37 @@ package currencyusemockdata;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CurrencyMockedData {
-    private List<Currency> currencies;
+public class CurrencyMockedDataQuery {
+    private List<CurrencyMockData> currencies;
 
-    private static CurrencyMockedData instance = null;
-    public static CurrencyMockedData getInstance(){
+    private static CurrencyMockedDataQuery instance = null;
+    public static CurrencyMockedDataQuery getInstance(){
         if(instance == null){
-            instance = new CurrencyMockedData();
+            instance = new CurrencyMockedDataQuery();
         }
         return instance;
     }
 
-    public CurrencyMockedData(){
-        currencies = new ArrayList<Currency>();
-        currencies.add(new Currency(1, "IDR",
+    public CurrencyMockedDataQuery(){
+        currencies = new ArrayList<CurrencyMockData>();
+        currencies.add(new CurrencyMockData(1, "IDR",
                 "Indonesia Rupiah"));
-        currencies.add(new Currency(2, "USD",
+        currencies.add(new CurrencyMockData(2, "USD",
                 "US Dollar"));
-        currencies.add(new Currency(3, "EUR",
+        currencies.add(new CurrencyMockData(3, "EUR",
                 "Euro"));
-        currencies.add(new Currency(4, "CAD",
+        currencies.add(new CurrencyMockData(4, "CAD",
                 "Canadian Dollar"));
-        currencies.add(new Currency(5, "GBP",
+        currencies.add(new CurrencyMockData(5, "GBP",
                 "Pound Sterling"));
     }
 
-    public List<Currency> fetchCurrencies() {
+    public List<CurrencyMockData> fetchCurrencies() {
         return currencies;
     }
 
-    public Currency getCurrencyById(int id) {
-        for(Currency b: currencies) {
+    public CurrencyMockData getCurrencyById(int id) {
+        for(CurrencyMockData b: currencies) {
             if(b.getId() == id) {
                 return b;
             }
@@ -42,9 +42,9 @@ public class CurrencyMockedData {
     }
 
     // search currencyusemockdata by text
-    public List<Currency> searchCurrencies(String searchTerm) {
-        List<Currency> searchedCurrencies = new ArrayList<Currency>();
-        for(Currency c: currencies) {
+    public List<CurrencyMockData> searchCurrencies(String searchTerm) {
+        List<CurrencyMockData> searchedCurrencies = new ArrayList<CurrencyMockData>();
+        for(CurrencyMockData c: currencies) {
             if(c.getName().toLowerCase().contains(searchTerm.toLowerCase()) ||
                     c.getDescription().toLowerCase().contains(searchTerm.toLowerCase())) {
                 searchedCurrencies.add(c);
@@ -55,15 +55,15 @@ public class CurrencyMockedData {
     }
 
     // create currencyusemockdata
-    public Currency createCurrency(int id, String name, String description) {
-        Currency newCurrency = new Currency(id, name, description);
+    public CurrencyMockData createCurrency(int id, String name, String description) {
+        CurrencyMockData newCurrency = new CurrencyMockData(id, name, description);
         currencies.add(newCurrency);
         return newCurrency;
     }
 
     // update currencyusemockdata
-    public Currency updateCurrency(int id, String name, String description) {
-        for(Currency c: currencies) {
+    public CurrencyMockData updateCurrency(int id, String name, String description) {
+        for(CurrencyMockData c: currencies) {
             if(c.getId() == id) {
                 int currencyIndex = currencies.indexOf(c);
                 c.setName(name);
@@ -77,7 +77,7 @@ public class CurrencyMockedData {
     // delete currencyusemockdata by id
     public boolean delete(int id){
         int currencyIndex = -1;
-        for(Currency c: currencies) {
+        for(CurrencyMockData c: currencies) {
             if(c.getId() == id) {
                 currencyIndex = currencies.indexOf(c);
                 continue;
